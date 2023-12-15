@@ -13,12 +13,12 @@ func CreateRouter() *gin.Engine {
 
 	// Define routes
 	router.GET("/", handlers.HomeHandler)
-	router.GET("/algorithms/endpoint/:id", func(c *gin.Context) {
+	router.GET("/algorithms/fibonacci/:number", func(c *gin.Context) {
 		// Get the value of the "id" parameter from the path
-		id := c.Param("id")
+		num := c.Param("number")
 
 		// Process the input and create a response
-		response := fmt.Sprintf("Received ID: %s", id)
+		response := fmt.Sprintf("Received ID: %s", num)
 
 		// Send the response
 		c.JSON(http.StatusOK, gin.H{"message": response})
