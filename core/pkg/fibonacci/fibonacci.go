@@ -1,7 +1,7 @@
 package fibonacci
 
 import (
-	"log"
+	"github.com/jgfranco17/algorithm-api/service/pkg/logging"
 )
 
 type FibonacciSequence struct {
@@ -22,14 +22,14 @@ func fibonacciValue(number int) int {
 }
 
 func Fibonacci(limit int) *FibonacciSequence {
+	log := logging.GetLogger()
 	result := []uint64{0}
 	hardCap := 93
 	if limit == 1 {
 		result = append(result, 1)
 	} else {
-		// Generate Fibonacci numbers up to the limit
 		if limit >= hardCap {
-			log.Printf("Maximum limit is %d", hardCap)
+			log.Warnf("Maximum limit is %d", hardCap)
 			limit = hardCap - 1
 		}
 		result = []uint64{0, 1}

@@ -2,7 +2,11 @@ module github.com/jgfranco17/algorithm-api/service
 
 go 1.21.4
 
-require github.com/gin-gonic/gin v1.9.1
+require (
+	github.com/gin-gonic/gin v1.9.1
+	github.com/jgfranco17/algorithm-api/core v0.0.0-20231215093725-5de6218d365b
+	github.com/sirupsen/logrus v1.9.3
+)
 
 require (
 	github.com/bytedance/sonic v1.9.1 // indirect
