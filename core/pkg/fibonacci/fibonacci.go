@@ -1,5 +1,9 @@
 package fibonacci
 
+import (
+	"log"
+)
+
 type FibonacciSequence struct {
 	Length   int
 	Sequence []int
@@ -18,30 +22,21 @@ func fibonacciValue(number int) int {
 }
 
 func Fibonacci(limit int) *FibonacciSequence {
-	var result []int
-	if limit <= 0 {
-		result = []int{0}
-	} else if limit == 1 {
-		result = []int{0, 1}
+	result := []int{0}
+	if limit == 1 {
+		result = append(result, 1)
 	} else {
-		// Initialize the result array with the first two Fibonacci numbers
-		result := []int{0, 1}
-
 		// Generate Fibonacci numbers up to the limit
-		for i := 2; ; i++ {
+		result = []int{0, 1}
+		for i := 2; i < limit; i++ {
 			nextFib := result[i-1] + result[i-2]
-
-			// Break the loop if the next Fibonacci number exceeds the limit
-			if nextFib > limit {
-				break
-			}
-
 			result = append(result, nextFib)
 		}
 	}
 
+	log.Printf("Generated Fibonacci number sequence for %d: %v", limit, result)
 	return &FibonacciSequence{
-		Length:   limit + 1,
+		Length:   len(result),
 		Sequence: result,
 	}
 }
