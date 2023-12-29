@@ -12,7 +12,7 @@ import (
 
 func HomeHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"message": "Welcome to the home page!",
+		"message": "Welcome to the Algorithm API page!",
 	})
 }
 
