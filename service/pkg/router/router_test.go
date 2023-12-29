@@ -16,7 +16,7 @@ func parseJsonData(t *testing.T, r *httptest.ResponseRecorder) map[string]string
 	return responseBody
 }
 
-func TestCreateServer(t *testing.T) {
+func TestCreateValidServer(t *testing.T) {
 	version := 1
 	port := 8080
 
@@ -25,6 +25,12 @@ func TestCreateServer(t *testing.T) {
 	assert.NotNil(t, server)
 	assert.NotNil(t, server.Router)
 	assert.Equal(t, ":8080", server.Port)
+}
+
+func TestCreateServer(t *testing.T) {
+	server, serverErr := CreateServer(-1, 8080)
+	assert.Nil(t, server)
+	assert.NotNil(t, serverErr)
 }
 
 func TestHomeHandler(t *testing.T) {

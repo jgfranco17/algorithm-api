@@ -21,6 +21,9 @@ func newAlgorithmRoute(version int, algorithm string, params string) string {
 }
 
 func CreateServer(version int, port int) (*Server, error) {
+	if version < 0 {
+		return nil, fmt.Errorf("Version must be greater or equal to 0.")
+	}
 	router := gin.Default()
 	router.GET("/", handlers.HomeHandler)
 	router.GET("/about", handlers.AboutHandler)
