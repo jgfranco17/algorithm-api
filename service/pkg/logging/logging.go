@@ -6,12 +6,11 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func GetLogger(ctx context.Context) *logrus.Logger {
+func GetLogger(ctx context.Context) *logrus.Entry {
 	logger := logrus.New()
 	logLevel := logrus.InfoLevel
 	logger.SetLevel(logLevel)
-	logger.WithFields(logrus.Fields{
+	return logger.WithFields(logrus.Fields{
 		"Section": ctx.Value("section"),
 	})
-	return logger
 }

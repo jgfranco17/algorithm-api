@@ -15,6 +15,7 @@ func TwoSum(nums []int, target int) *TwoSumResult {
 	ctx := context.WithValue(context.Background(), "section", "TwoSum")
 	log := logging.GetLogger(ctx)
 	numIndices := make(map[int]int)
+	log.Infof("Finding target=%d in %v", nums, target)
 
 	for i, num := range nums {
 		complement := target - num
