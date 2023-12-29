@@ -48,20 +48,27 @@ To run the API server in dev mode, simply execute either of the following comman
 go run service/cmd/main.go
 
 # Justfile command runner
-just run
+just run-debug <port>
 ```
-
-Instructions will be added as the project develops.
 
 ### Calling the API
 
-Instructions will be added as the project develops.
+Once the service is up and running, we can now reach the endpoints. A basic example of using `curl` to reach endpoints is shown below. This example assumes that we are using the `v0` endpoints; see the documentation for more detailed guides on how the endpoint URL is determined.
+
+```shell
+$ curl 'localhost:8080/v0/algorithms/twosum/2-7-11-15/9'
+{"Found":true,"Indices":[0,1]}
+```
 
 ## 🔧 Testing <a name = "testing"></a>
 
 ### Running unittest suite
 
-Instructions will be added as the project develops.
+You can use the command runner to run a simple test suite execution using `go test`.
+
+```shell
+$ just test
+```
 
 ## ✒️ Authors <a name = "authors"></a>
 
