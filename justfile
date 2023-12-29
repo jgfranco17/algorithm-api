@@ -2,9 +2,9 @@
 default:
     @just --list
 
-run:
+run port:
     @echo "Starting prototype server..."
-    go run service/cmd/main.go
+    go run service/cmd/main.go --port {{port}}
 
 test:
     @echo "Running unit tests!"
