@@ -19,7 +19,7 @@ func main() {
 	log := logging.GetLogger()
 	switch *mode {
 	case "dev", "prod":
-		log.Infof("Running API %d server on port %d", mode, port)
+		log.Infof("Running API %s server on port %d", *mode, *port)
 	default:
 		log.Fatalf("Invalid mode provided, '%s' is not recognized.", *mode)
 	}
