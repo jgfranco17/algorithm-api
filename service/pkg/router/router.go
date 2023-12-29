@@ -19,7 +19,7 @@ func newAlgorithmRoute(version int, algorithm string, params string) string {
 	return fmt.Sprintf("%s/algorithms/%s/%s", versionNumber, algorithm, params)
 }
 
-func CreateServer(version int, port int) *Server {
+func CreateServer(version int, port int) (*Server, error) {
 	router := gin.Default()
 	router.GET("/", handlers.HomeHandler)
 	router.GET("/about", handlers.AboutHandler)
@@ -29,7 +29,7 @@ func CreateServer(version int, port int) *Server {
 	return &Server{
 		Router: router,
 		Port:   fmt.Sprintf(":%d", port),
-	}
+	}, nil
 }
 
 func (s *Server) Run() error {

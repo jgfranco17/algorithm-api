@@ -20,15 +20,16 @@ func TestCreateServer(t *testing.T) {
 	version := 1
 	port := 8080
 
-	server := CreateServer(version, port)
-
+	server, serverErr := CreateServer(version, port)
+	assert.NoError(t, serverErr)
 	assert.NotNil(t, server)
 	assert.NotNil(t, server.Router)
 	assert.Equal(t, ":8080", server.Port)
 }
 
 func TestHomeHandler(t *testing.T) {
-	server := CreateServer(1, 8080)
+	server, serverErr := CreateServer(1, 8080)
+	assert.NoError(t, serverErr)
 	req, _ := http.NewRequest("GET", "/", nil)
 	resp := httptest.NewRecorder()
 	server.Router.ServeHTTP(resp, req)
@@ -38,10 +39,10 @@ func TestHomeHandler(t *testing.T) {
 }
 
 func TestAboutHandler(t *testing.T) {
-	server := CreateServer(1, 8080)
+	server, serverErr := CreateServer(1, 8080)
+	assert.NoError(t, serverErr)
 	req, _ := http.NewRequest("GET", "/about", nil)
 	resp := httptest.NewRecorder()
-
 	server.Router.ServeHTTP(resp, req)
 
 	assert.Equal(t, http.StatusOK, resp.Code)
@@ -52,23 +53,21 @@ func TestAboutHandler(t *testing.T) {
 }
 
 func TestFibonacciHandler(t *testing.T) {
-	server := CreateServer(1, 8080)
+	server, serverErr := CreateServer(1, 8080)
+	assert.NoError(t, serverErr)
 	req, _ := http.NewRequest("GET", "/v1/algorithms/fibonacci/5", nil)
 	resp := httptest.NewRecorder()
 
 	server.Router.ServeHTTP(resp, req)
-
 	assert.Equal(t, http.StatusOK, resp.Code)
-	// Add additional assertions based on the expected response
 }
 
 func TestTwoSumHandler(t *testing.T) {
-	server := CreateServer(1, 8080)
+	server, serverErr := CreateServer(1, 8080)
+	assert.NoError(t, serverErr)
 	req, _ := http.NewRequest("GET", "/v1/algorithms/twosum/1-2-3/4", nil)
 	resp := httptest.NewRecorder()
 
 	server.Router.ServeHTTP(resp, req)
-
 	assert.Equal(t, http.StatusOK, resp.Code)
-	// Add additional assertions based on the expected response
 }
