@@ -10,7 +10,7 @@ func CreateRouter() *gin.Engine {
 	router := gin.Default()
 	router.GET("/", handlers.HomeHandler)
 	router.GET("/algorithms/fibonacci/:number", handlers.FibonacciHandler)
-	router.GET("/algorithms/twosum/:numbers/:target", handlers.FibonacciHandler)
+	router.GET("/algorithms/twosum/:numbers/:target", handlers.TwoSumHandler)
 
 	return router
 }
