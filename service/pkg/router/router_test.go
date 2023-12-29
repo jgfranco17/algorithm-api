@@ -52,6 +52,17 @@ func TestAboutHandler(t *testing.T) {
 	assert.Equal(t, "Algorithm API", data["title"])
 }
 
+func TestNotFoundHandler(t *testing.T) {
+	server, serverErr := CreateServer(1, 8080)
+	assert.NoError(t, serverErr)
+	req, _ := http.NewRequest("GET", "/broken", nil)
+	resp := httptest.NewRecorder()
+	server.Router.ServeHTTP(resp, req)
+	data := parseJsonData(t, resp)
+	assert.Equal(t, 404, resp.Code)
+	assert.Equal(t, "Endpoint not found", data["error"])
+}
+
 func TestFibonacciHandler(t *testing.T) {
 	server, serverErr := CreateServer(1, 8080)
 	assert.NoError(t, serverErr)

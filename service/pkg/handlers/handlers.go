@@ -25,6 +25,12 @@ func AboutHandler(c *gin.Context) {
 	})
 }
 
+func NotFoundHandler(c *gin.Context) {
+	c.JSON(http.StatusNotFound, gin.H{
+		"error": "Endpoint not found",
+	})
+}
+
 func FibonacciHandler(c *gin.Context) {
 	num, _ := strconv.Atoi(c.Param("number"))
 	sequence := fib.Fibonacci(num)

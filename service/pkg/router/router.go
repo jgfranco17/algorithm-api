@@ -27,6 +27,7 @@ func CreateServer(version int, port int) (*Server, error) {
 	router.GET(newAlgorithmRoute(version, "fibonacci", ":number"), handlers.FibonacciHandler)
 	router.GET(newAlgorithmRoute(version, "twosum", ":numbers/:target"), handlers.TwoSumHandler)
 	router.GET(newAlgorithmRoute(version, "palindrome", ":word"), handlers.FibonacciHandler)
+	router.NoRoute(handlers.NotFoundHandler)
 
 	return &Server{
 		Router: router,
