@@ -2,9 +2,13 @@
 default:
     @just --list
 
-run port:
+run-debug port:
     @echo "Starting prototype server..."
-    go run service/cmd/main.go --port {{port}}
+    go run service/cmd/main.go --port={{port}} --dev=true
+
+run-prod port:
+    @echo "Starting production server..."
+    go run service/cmd/main.go --port {{port}} --dev=false
 
 test:
     @echo "Running unit tests!"
