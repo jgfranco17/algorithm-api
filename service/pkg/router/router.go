@@ -1,6 +1,7 @@
 package router
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/gin-gonic/gin"
@@ -33,7 +34,8 @@ func CreateServer(version int, port int) (*Server, error) {
 }
 
 func (s *Server) Run() error {
-	log := logging.GetLogger()
+	ctx := context.WithValue(context.Background(), "section", "ServerCreate")
+	log := logging.GetLogger(ctx)
 	log.Infof("Starting Algorithm API server!")
 	s.Router.Run(s.Port)
 	return nil

@@ -1,6 +1,8 @@
 package fibonacci
 
 import (
+	"context"
+
 	"github.com/jgfranco17/algorithm-api/service/pkg/logging"
 )
 
@@ -22,7 +24,8 @@ func fibonacciValue(number int) int {
 }
 
 func Fibonacci(limit int) *FibonacciSequence {
-	log := logging.GetLogger()
+	ctx := context.WithValue(context.Background(), "section", "Fibonacci")
+	log := logging.GetLogger(ctx)
 	result := []uint64{0}
 	hardCap := 93
 	if limit == 1 {

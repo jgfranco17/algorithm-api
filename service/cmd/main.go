@@ -2,6 +2,7 @@
 package main
 
 import (
+	"context"
 	"flag"
 
 	"github.com/gin-gonic/gin"
@@ -16,7 +17,8 @@ var (
 
 func main() {
 	flag.Parse()
-	log := logging.GetLogger()
+	ctx := context.WithValue(context.Background(), "section", "Main")
+	log := logging.GetLogger(ctx)
 	switch *mode {
 	case "dev", "prod":
 		log.Infof("Running API %s server on port %d", *mode, *port)
