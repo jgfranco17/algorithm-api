@@ -11,8 +11,16 @@ import (
 )
 
 func HomeHandler(c *gin.Context) {
-	c.JSON(200, gin.H{
+	c.JSON(http.StatusOK, gin.H{
 		"message": "Welcome to the home page!",
+	})
+}
+
+func AboutHandler(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"author": "Chino Franco",
+		"title":  "Algorithm API",
+		"repo":   "https://github.com/jgfranco17/algorithm-api",
 	})
 }
 

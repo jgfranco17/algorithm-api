@@ -14,11 +14,17 @@ type Server struct {
 	Port   string
 }
 
-func CreateServer(port int) *Server {
+func newAlgorithmRoute(version int, algorithm string, params string) string {
+	versionNumber := fmt.Sprintf("v%d", version)
+	return fmt.Sprintf("%s/algorithms/%s/%s", versionNumber, algorithm, params)
+}
+
+func CreateServer(version int, port int) *Server {
 	router := gin.Default()
 	router.GET("/", handlers.HomeHandler)
-	router.GET("/algorithms/fibonacci/:number", handlers.FibonacciHandler)
-	router.GET("/algorithms/twosum/:numbers/:target", handlers.TwoSumHandler)
+	router.GET("/about", handlers.AboutHandler)
+	router.GET(newAlgorithmRoute(version, "fibonacci", ":number"), handlers.FibonacciHandler)
+	router.GET(newAlgorithmRoute(version, "twosum", ":numbers/:target"), handlers.TwoSumHandler)
 
 	return &Server{
 		Router: router,

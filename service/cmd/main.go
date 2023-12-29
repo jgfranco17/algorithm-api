@@ -6,6 +6,6 @@ import (
 )
 
 func main() {
-	server := router.CreateServer(8080)
+	server := router.CreateServer(0, 8080)
 	server.Run()
 }
