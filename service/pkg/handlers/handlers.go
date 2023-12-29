@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	fib "github.com/jgfranco17/algorithm-api/core/pkg/fibonacci"
+	pal "github.com/jgfranco17/algorithm-api/core/pkg/palindrome"
 	ts "github.com/jgfranco17/algorithm-api/core/pkg/twosum"
 )
 
@@ -52,4 +53,11 @@ func TwoSumHandler(c *gin.Context) {
 
 	result := ts.TwoSum(numbers, target)
 	c.JSON(http.StatusOK, result)
+}
+
+func PalindromeHandler(c *gin.Context) {
+	word := c.Param("word")
+	check := pal.PalindromeCheck(word)
+
+	c.JSON(http.StatusOK, check)
 }
