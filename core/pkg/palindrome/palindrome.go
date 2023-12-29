@@ -1,7 +1,10 @@
 package palindrome
 
 import (
+	"context"
 	"strings"
+
+	"github.com/jgfranco17/algorithm-api/service/pkg/logging"
 )
 
 type PalindromeCheckOutput struct {
@@ -14,13 +17,15 @@ func isAlphanumeric(c byte) bool {
 }
 
 func PalindromeCheck(word string) *PalindromeCheckOutput {
+	ctx := context.WithValue(context.Background(), "section", "Palindrome")
+	log := logging.GetLogger(ctx)
 	word = strings.ToLower(word)
 	left, right := 0, len(word)-1
 	result := &PalindromeCheckOutput{
 		Word:         word,
 		IsPalindrome: false,
 	}
-
+	log.Infof("Checking if '%s' palindrome", word)
 	for left < right {
 		for left < right && !isAlphanumeric(word[left]) {
 			left++
