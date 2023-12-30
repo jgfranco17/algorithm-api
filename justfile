@@ -14,3 +14,9 @@ test:
     @echo "Running unit tests!"
     go clean -testcache
     go test github.com/jgfranco17/algorithm-api/...
+
+# Build Docker image
+build:
+	@echo "Building Docker image..."
+	docker build -t algorithm-api:latest -f ./Dockerfile .
+	@echo "Docker image built successfully!"
