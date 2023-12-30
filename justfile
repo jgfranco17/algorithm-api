@@ -13,7 +13,7 @@ run-prod port:
 test:
     @echo "Running unit tests!"
     go clean -testcache
-    go test github.com/jgfranco17/algorithm-api/...
+    go test -cover github.com/jgfranco17/algorithm-api/...
 
 # Build Docker image
 build:
