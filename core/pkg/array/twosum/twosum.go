@@ -6,12 +6,7 @@ import (
 	"github.com/jgfranco17/algorithm-api/service/pkg/logging"
 )
 
-type TwoSumResult struct {
-	Found   bool
-	Indices []int
-}
-
-func TwoSum(nums []int, target int) *TwoSumResult {
+func TwoSum(nums []int, target int) (bool, []int) {
 	ctx := context.WithValue(context.Background(), "section", "TwoSum")
 	log := logging.GetLogger(ctx)
 	numIndices := make(map[int]int)
@@ -20,16 +15,10 @@ func TwoSum(nums []int, target int) *TwoSumResult {
 	for i, num := range nums {
 		complement := target - num
 		if j, found := numIndices[complement]; found {
-			return &TwoSumResult{
-				Found:   true,
-				Indices: []int{j, i},
-			}
+			return true, []int{j, i}
 		}
 		numIndices[num] = i
 	}
 	log.Infof("No valid result found.")
-	return &TwoSumResult{
-		Found:   false,
-		Indices: nil,
-	}
+	return false, nil
 }

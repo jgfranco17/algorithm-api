@@ -36,7 +36,10 @@ func FibonacciHandler(c *gin.Context) {
 	num, _ := strconv.Atoi(c.Param("number"))
 	sequence := fib.Fibonacci(num)
 
-	c.JSON(http.StatusOK, sequence)
+	c.JSON(http.StatusOK, gin.H{
+		"count":    num,
+		"sequence": sequence,
+	})
 }
 
 func TwoSumHandler(c *gin.Context) {
@@ -48,15 +51,21 @@ func TwoSumHandler(c *gin.Context) {
 		return
 	}
 
-	result := ts.TwoSum(numbers, target)
-	c.JSON(http.StatusOK, result)
+	found, indices := ts.TwoSum(numbers, target)
+	c.JSON(http.StatusOK, gin.H{
+		"found":  found,
+		"result": indices,
+	})
 }
 
 func PalindromeHandler(c *gin.Context) {
 	word := c.Param("word")
-	check := pal.PalindromeCheck(word)
+	palindromeCheck := pal.PalindromeCheck(word)
 
-	c.JSON(http.StatusOK, check)
+	c.JSON(http.StatusOK, gin.H{
+		"word":   word,
+		"result": palindromeCheck,
+	})
 }
 
 func MaxSubArrayHandler(c *gin.Context) {

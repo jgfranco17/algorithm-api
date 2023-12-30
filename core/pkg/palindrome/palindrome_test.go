@@ -20,8 +20,7 @@ func TestPalindromeCheck(t *testing.T) {
 
 	for _, test := range tests {
 		result := PalindromeCheck(test.word)
-		assert.Equal(t, test.word, result.Word)
-		assert.Equal(t, test.expected, result.IsPalindrome)
+		assert.Equal(t, test.expected, result)
 	}
 }
 

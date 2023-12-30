@@ -6,11 +6,6 @@ import (
 	"github.com/jgfranco17/algorithm-api/service/pkg/logging"
 )
 
-type FibonacciSequence struct {
-	Length   int
-	Sequence []uint64
-}
-
 func fibonacciValue(number int) int {
 	if number <= 1 {
 		return number
@@ -23,7 +18,7 @@ func fibonacciValue(number int) int {
 	return b
 }
 
-func Fibonacci(limit int) *FibonacciSequence {
+func Fibonacci(limit int) []uint64 {
 	ctx := context.WithValue(context.Background(), "section", "Fibonacci")
 	log := logging.GetLogger(ctx)
 	result := []uint64{0}
@@ -43,8 +38,5 @@ func Fibonacci(limit int) *FibonacciSequence {
 	}
 
 	log.Printf("Generated Fibonacci number sequence for %d", limit)
-	return &FibonacciSequence{
-		Length:   len(result),
-		Sequence: result,
-	}
+	return result
 }

@@ -1,27 +1,28 @@
 package twosum
 
 import (
-	"reflect"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestTwoSum(t *testing.T) {
 	tests := []struct {
-		nums     []int
-		target   int
-		expected *TwoSumResult
+		nums            []int
+		target          int
+		expectedFound   bool
+		expectedIndices []int
 	}{
-		{[]int{2, 7, 11, 15}, 9, &TwoSumResult{Found: true, Indices: []int{0, 1}}},
-		{[]int{3, 2, 4}, 6, &TwoSumResult{Found: true, Indices: []int{1, 2}}},
-		{[]int{3, 3}, 6, &TwoSumResult{Found: true, Indices: []int{0, 1}}},
-		{[]int{1, 2, 3, 4, 5}, 9, &TwoSumResult{Found: true, Indices: []int{3, 4}}},
-		{[]int{1, 2, 3, 4, 5}, 20, &TwoSumResult{Found: false, Indices: nil}},
+		{nums: []int{2, 7, 11, 15}, target: 9, expectedFound: true, expectedIndices: []int{0, 1}},
+		{nums: []int{3, 2, 4}, target: 6, expectedFound: true, expectedIndices: []int{1, 2}},
+		{nums: []int{3, 3}, target: 6, expectedFound: true, expectedIndices: []int{0, 1}},
+		{nums: []int{1, 2, 3, 4, 5}, target: 9, expectedFound: true, expectedIndices: []int{3, 4}},
+		{nums: []int{1, 2, 3, 4, 5}, target: 20, expectedFound: false, expectedIndices: nil},
 	}
 
 	for _, test := range tests {
-		result := TwoSum(test.nums, test.target)
-		if !reflect.DeepEqual(result, test.expected) {
-			t.Errorf("For nums=%v, target=%d, expected %v but got %v", test.nums, test.target, test.expected, result)
-		}
+		found, indices := TwoSum(test.nums, test.target)
+		assert.Equal(t, found, test.expectedFound)
+		assert.Equal(t, indices, test.expectedIndices)
 	}
 }
