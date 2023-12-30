@@ -41,8 +41,8 @@ func FibonacciHandler(c *gin.Context) {
 
 func TwoSumHandler(c *gin.Context) {
 	target, _ := strconv.Atoi(c.Param("target"))
-	numList := c.Param("numbers")
-	numbers, parseErr := utils.ParseArray(numList)
+	numList := c.QueryArray("nums")
+	numbers, parseErr := utils.StringToIntArray(numList)
 	if parseErr != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid number format"})
 		return
@@ -60,8 +60,8 @@ func PalindromeHandler(c *gin.Context) {
 }
 
 func MaxSubArrayHandler(c *gin.Context) {
-	numList := c.Param("numbers")
-	numbers, parseErr := utils.ParseArray(numList)
+	numList := c.QueryArray("nums")
+	numbers, parseErr := utils.StringToIntArray(numList)
 	if parseErr != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid number format"})
 		return
