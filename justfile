@@ -1,22 +1,27 @@
+project := "algorithm-api"
+
 # Default command
 default:
     @just --list
 
+# Run debug server
 run-debug port:
-    @echo "Starting prototype server..."
+    @echo "Starting prototype server on port {{port}}..."
     go run service/cmd/main.go --port={{port}} --dev=true
 
+# Run production server
 run-prod port:
-    @echo "Starting production server..."
+    @echo "Starting production server on port {{port}}..."
     go run service/cmd/main.go --port {{port}} --dev=false
 
+# Execute unit tests
 test:
     @echo "Running unit tests!"
     go clean -testcache
-    go test -cover github.com/jgfranco17/algorithm-api/...
+    go test -cover github.com/jgfranco17/{{project}}/...
 
 # Build Docker image
 build:
 	@echo "Building Docker image..."
-	docker build -t algorithm-api:latest -f ./Dockerfile .
+	docker build -t {{project}}:latest -f ./Dockerfile .
 	@echo "Docker image built successfully!"
