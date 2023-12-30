@@ -3,12 +3,13 @@ package handlers
 import (
 	"net/http"
 	"strconv"
-	"strings"
 
 	"github.com/gin-gonic/gin"
+	msa "github.com/jgfranco17/algorithm-api/core/pkg/array/maxsubarray"
+	ts "github.com/jgfranco17/algorithm-api/core/pkg/array/twosum"
 	fib "github.com/jgfranco17/algorithm-api/core/pkg/fibonacci"
 	pal "github.com/jgfranco17/algorithm-api/core/pkg/palindrome"
-	ts "github.com/jgfranco17/algorithm-api/core/pkg/twosum"
+	"github.com/jgfranco17/algorithm-api/core/pkg/utils"
 )
 
 func HomeHandler(c *gin.Context) {
@@ -39,22 +40,12 @@ func FibonacciHandler(c *gin.Context) {
 }
 
 func TwoSumHandler(c *gin.Context) {
-	// Get the "numbers" parameter from the URL
-	numbersStr := c.Param("numbers")
 	target, _ := strconv.Atoi(c.Param("target"))
-
-	// Split the string by dashes
-	numberStrings := strings.Split(numbersStr, "-")
-
-	// Convert each string to an integer
-	var numbers []int
-	for _, numStr := range numberStrings {
-		num, err := strconv.Atoi(numStr)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid number format"})
-			return
-		}
-		numbers = append(numbers, num)
+	numList := c.Param("numbers")
+	numbers, parseErr := utils.ParseArray(numList)
+	if parseErr != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid number format"})
+		return
 	}
 
 	result := ts.TwoSum(numbers, target)
@@ -66,4 +57,18 @@ func PalindromeHandler(c *gin.Context) {
 	check := pal.PalindromeCheck(word)
 
 	c.JSON(http.StatusOK, check)
+}
+
+func MaxSubArrayHandler(c *gin.Context) {
+	numList := c.Param("numbers")
+	numbers, parseErr := utils.ParseArray(numList)
+	if parseErr != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid number format"})
+		return
+	}
+	result := msa.MaxSubArray(numbers)
+	c.JSON(http.StatusOK, gin.H{
+		"sequence": numbers,
+		"subarray": result,
+	})
 }
