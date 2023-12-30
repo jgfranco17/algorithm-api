@@ -19,7 +19,7 @@
 
 ## 🔎 About <a name = "about"></a>
 
-This project is meant to showcase the concepts of API design and DevOps that I have learned so far. This project features CI/CD workflows and automations, unittesting, and containerization. Git & Github were used as the VCS. I dub this as "Algorithms-as-a-Service".
+This project is meant to showcase the concepts of Backend Development and DevOps that I have learned so far. This project features API routing and design, CI/CD workflows and automations, unittesting, and containerization. Git & Github were used as the VCS. I dub this as "Algorithms-as-a-Service".
 
 This program aims to create a Gin-based microservice that solves some classic programming problems. The Algorithm Microservice API provides a simple HTTP-based API to solve some of these problems. This microservice can be easily integrated into other applications or used for testing and learning purposes.
 
@@ -35,7 +35,11 @@ Before running the Algorithm Microservice API, make sure you have the following 
 
 ### Installing
 
-Instructions will be added as the project develops.
+Once you have ensured you have the appropriate version of Go installed, you can dive right in by cloning the repository.
+
+```shell
+git clone https://github.com/jgfranco17/algorithm-api.git
+```
 
 ## 🚀 Usage <a name = "usage"></a>
 
