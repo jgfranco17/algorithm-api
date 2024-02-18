@@ -65,8 +65,16 @@ func handleError(c *gin.Context, err error) {
 	c.JSON(errorResponse.Status, errorResponse.Body)
 }
 
+func ServeError(c *gin.Context, status int, message string, err error) {
+	c.JSON(status, gin.H{
+		"status":    status,
+		"message":   message,
+		"traceback": err.Error(),
+	})
+}
+
 // Wrapper for handlers that return errors
-func withErrorHandling(handler func(c *gin.Context) error) gin.HandlerFunc {
+func WithErrorHandling(handler func(c *gin.Context) error) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		err := handler(c)
 		if err != nil {

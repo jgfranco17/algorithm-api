@@ -1,7 +1,6 @@
-package system_info
+package system
 
 import (
-	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -13,12 +12,13 @@ func init() {
 	startTime = time.Now()
 }
 
-type healthStatus struct {
-	Status string `json:"status"`
+type HealthStatus struct {
+	Timestamp string `json:"timestamp"`
+	Status    string `json:"status"`
 }
 
 func SetSystemRoutes(route *gin.Engine) {
-	route.GET("/health-check", func(c *gin.Context) {
-		c.JSON(http.StatusOK, healthStatus{Status: "healthy"})
-	})
+	route.GET("/", HomeHandler)
+	route.GET("/about", AboutHandler)
+	route.GET("/health-check", HealthCheckHandler)
 }

@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/jgfranco17/algorithm-api/service/pkg/handlers"
+	error_handling "github.com/jgfranco17/algorithm-api/service/pkg/router/error_handling"
 )
 
 func newAlgorithmRoute(algorithm string, params string) string {
@@ -15,6 +16,6 @@ func newAlgorithmRoute(algorithm string, params string) string {
 func SetRoutes(route *gin.Engine) {
 	v0 := route.Group("/v0")
 	{
-		v0.GET(newAlgorithmRoute("fibonacci", ":number"), withErrorHandling(handlers.FibonacciHandler()))
+		v0.GET(newAlgorithmRoute("fibonacci", ":number"), error_handling.WithErrorHandling(handlers.FibonacciHandler()))
 	}
 }
