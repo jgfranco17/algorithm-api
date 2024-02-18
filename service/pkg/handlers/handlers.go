@@ -7,46 +7,9 @@ import (
 	"github.com/gin-gonic/gin"
 	msa "github.com/jgfranco17/algorithm-api/core/pkg/array/maxsubarray"
 	ts "github.com/jgfranco17/algorithm-api/core/pkg/array/twosum"
-	fib "github.com/jgfranco17/algorithm-api/core/pkg/fibonacci"
 	pal "github.com/jgfranco17/algorithm-api/core/pkg/palindrome"
 	"github.com/jgfranco17/algorithm-api/core/pkg/utils"
 )
-
-func HomeHandler(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"message": "Welcome to the Algorithm API page!",
-	})
-}
-
-func AboutHandler(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"author": "Chino Franco",
-		"title":  "Algorithm API",
-		"repo":   "https://github.com/jgfranco17/algorithm-api",
-	})
-}
-
-func NotFoundHandler(c *gin.Context) {
-	c.JSON(http.StatusNotFound, gin.H{
-		"error": "Endpoint not found",
-	})
-}
-
-func FibonacciHandler() func(c *gin.Context) error {
-	return func(c *gin.Context) error {
-		num, _ := strconv.Atoi(c.Param("number"))
-		sequence, err := fib.Fibonacci(num)
-		if err != nil {
-			return err
-		}
-
-		c.JSON(http.StatusOK, gin.H{
-			"count":    num,
-			"sequence": sequence,
-		})
-		return nil
-	}
-}
 
 func TwoSumHandler(c *gin.Context) {
 	target, _ := strconv.Atoi(c.Param("target"))
