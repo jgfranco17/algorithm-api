@@ -82,7 +82,7 @@ func TestFibonacciHandler(t *testing.T) {
 func TestTwoSumHandler(t *testing.T) {
 	server, serverErr := CreateServer(1, 8080)
 	assert.NoError(t, serverErr)
-	req, _ := http.NewRequest("GET", "/v1/algorithms/twosum/1-2-3/4", nil)
+	req, _ := http.NewRequest("GET", "/v1/algorithms/twosum/9?nums=1&nums=2&nums=3&nums=4&nums=5", nil)
 	resp := httptest.NewRecorder()
 
 	server.Router.ServeHTTP(resp, req)
