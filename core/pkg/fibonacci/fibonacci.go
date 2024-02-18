@@ -2,6 +2,7 @@ package fibonacci
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/jgfranco17/algorithm-api/service/pkg/logging"
 )
@@ -18,7 +19,7 @@ func fibonacciValue(number int) int {
 	return b
 }
 
-func Fibonacci(limit int) []uint64 {
+func Fibonacci(limit int) ([]uint64, error) {
 	ctx := context.WithValue(context.Background(), "section", "Fibonacci")
 	log := logging.GetLogger(ctx)
 	result := []uint64{0}
@@ -27,8 +28,7 @@ func Fibonacci(limit int) []uint64 {
 		result = append(result, 1)
 	} else {
 		if limit >= hardCap {
-			log.Warnf("Maximum limit is %d", hardCap)
-			limit = hardCap - 1
+			return nil, fmt.Errorf("Maximum limit is %d", hardCap)
 		}
 		result = []uint64{0, 1}
 		for i := 2; i < limit; i++ {
@@ -38,5 +38,5 @@ func Fibonacci(limit int) []uint64 {
 	}
 
 	log.Printf("Generated Fibonacci number sequence for %d", limit)
-	return result
+	return result, nil
 }

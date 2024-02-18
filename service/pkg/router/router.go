@@ -1,18 +1,53 @@
 package router
 
 import (
-	"context"
 	"fmt"
+	"os"
 
 	"github.com/gin-gonic/gin"
-
-	"github.com/jgfranco17/algorithm-api/service/pkg/handlers"
-	"github.com/jgfranco17/algorithm-api/service/pkg/logging"
+	"github.com/google/uuid"
+	"github.com/jgfranco17/algorithm-api/core/pkg/context_settings"
+	"github.com/jgfranco17/algorithm-api/core/pkg/logger"
+	"github.com/jgfranco17/algorithm-api/service/pkg/env"
+	"github.com/jgfranco17/algorithm-api/service/pkg/router/headers"
+	system "github.com/jgfranco17/algorithm-api/service/pkg/router/system"
+	v0 "github.com/jgfranco17/algorithm-api/service/pkg/router/v0"
 )
 
-type Server struct {
-	Router *gin.Engine
-	Port   string
+// Add the fields we want to expose in the logger to the request context
+func addLoggerFields() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if !env.IsLocalEnvironment() {
+			requestID := uuid.NewString()
+			environment := os.Getenv(env.ENV_KEY_ENVIRONMENT)
+			version := os.Getenv(env.ENV_KEY_VERSION)
+
+			// Golang recommends contexts to use custom types instead
+			// of strings, but gin defines key as a string.
+			c.Set(string(context_settings.RequestId), requestID)
+			c.Set(string(context_settings.Environment), environment)
+			c.Set(string(context_settings.Version), version)
+
+			originInfo, err := headers.CreateOriginInfoHeader(c)
+
+			if err == nil && originInfo.Origin != "" {
+				c.Set(string(context_settings.Origin), fmt.Sprintf("%s@%s", originInfo.Origin, originInfo.Version))
+			}
+		}
+		c.Next()
+	}
+}
+
+// Log the start and completion of a request
+func logRequest() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		log := logger.FromContext(c)
+
+		origin := c.Request.Header.Get("Origin")
+		log.Infof("Request Started: [%s] %s from %s", c.Request.Method, c.Request.URL, origin)
+		c.Next()
+		log.Infof("Request Completed: [%s] %s", c.Request.Method, c.Request.URL)
+	}
 }
 
 func newAlgorithmRoute(version int, algorithm string, params string) string {
@@ -20,29 +55,14 @@ func newAlgorithmRoute(version int, algorithm string, params string) string {
 	return fmt.Sprintf("%s/algorithms/%s/%s", versionNumber, algorithm, params)
 }
 
-func CreateServer(version int, port int) (*Server, error) {
-	if version < 0 {
-		return nil, fmt.Errorf("Version must be greater or equal to 0.")
-	}
+// Configure the router adding routes and middlewares
+func GetRouter() *gin.Engine {
 	router := gin.Default()
-	router.GET("/", handlers.HomeHandler)
-	router.GET("/about", handlers.AboutHandler)
-	router.GET(newAlgorithmRoute(version, "fibonacci", ":number"), handlers.FibonacciHandler)
-	router.GET(newAlgorithmRoute(version, "twosum", ":target"), handlers.TwoSumHandler)
-	router.GET(newAlgorithmRoute(version, "palindrome", ":word"), handlers.FibonacciHandler)
-	router.GET(newAlgorithmRoute(version, "maxsubarray", ":numbers"), handlers.MaxSubArrayHandler)
-	router.NoRoute(handlers.NotFoundHandler)
+	router.Use(addLoggerFields())
+	router.Use(logRequest())
+	router.Use(GetCors())
+	system.SetSystemRoutes(router)
+	v0.SetRoutes(router)
 
-	return &Server{
-		Router: router,
-		Port:   fmt.Sprintf(":%d", port),
-	}, nil
-}
-
-func (s *Server) Run() error {
-	ctx := context.WithValue(context.Background(), "section", "ServerCreate")
-	log := logging.GetLogger(ctx)
-	log.Infof("Starting Algorithm API server!")
-	s.Router.Run(s.Port)
-	return nil
+	return router
 }

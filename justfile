@@ -25,3 +25,9 @@ build:
 	@echo "Building Docker image..."
 	docker build -t {{project}}:latest -f ./Dockerfile .
 	@echo "Docker image built successfully!"
+
+tidy:
+  -cd core && go mod tidy
+  -cd service && go mod tidy
+  -go mod tidy
+  go work sync

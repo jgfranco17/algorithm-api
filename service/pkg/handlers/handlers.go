@@ -32,14 +32,20 @@ func NotFoundHandler(c *gin.Context) {
 	})
 }
 
-func FibonacciHandler(c *gin.Context) {
-	num, _ := strconv.Atoi(c.Param("number"))
-	sequence := fib.Fibonacci(num)
+func FibonacciHandler() func(c *gin.Context) error {
+	return func(c *gin.Context) error {
+		num, _ := strconv.Atoi(c.Param("number"))
+		sequence, err := fib.Fibonacci(num)
+		if err != nil {
+			return err
+		}
 
-	c.JSON(http.StatusOK, gin.H{
-		"count":    num,
-		"sequence": sequence,
-	})
+		c.JSON(http.StatusOK, gin.H{
+			"count":    num,
+			"sequence": sequence,
+		})
+		return nil
+	}
 }
 
 func TwoSumHandler(c *gin.Context) {

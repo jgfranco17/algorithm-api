@@ -17,7 +17,8 @@ func TestFibonacci(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		result := Fibonacci(test.limit)
+		result, err := Fibonacci(test.limit)
+		assert.NoError(t, err)
 		assert.Equal(t, test.expected, result)
 	}
 }
