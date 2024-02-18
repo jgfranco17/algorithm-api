@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jgfranco17/algorithm-api/core/pkg/logger"
 	"github.com/jgfranco17/algorithm-api/service/pkg/data"
 )
 
@@ -47,9 +48,15 @@ func HealthCheckHandler(c *gin.Context) {
 }
 
 func NotFoundHandler(c *gin.Context) {
-	c.JSON(http.StatusNotFound, data.BasicErrorInfo{
+	log := logger.FromContext(c)
+	log.Errorf("Non-existent endpoint accessed: %s", c.Request.URL.Path)
+	c.JSON(http.StatusNotFound, newMissingEndpoint(c.Request.URL.Path))
+}
+
+func newMissingEndpoint(endpoint string) data.BasicErrorInfo {
+	return data.BasicErrorInfo{
 		StatusCode: http.StatusNotFound,
-		Endpoint:   c.Request.URL.Path,
+		Endpoint:   endpoint,
 		Message:    "Endpoint does not exist",
-	})
+	}
 }
