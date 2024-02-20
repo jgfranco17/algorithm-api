@@ -2,13 +2,12 @@ package router
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/jgfranco17/algorithm-api/core/pkg/context_settings"
 	"github.com/jgfranco17/algorithm-api/core/pkg/logger"
-	"github.com/jgfranco17/algorithm-api/service/pkg/env"
+	"github.com/jgfranco17/algorithm-api/service/pkg/data"
 	"github.com/jgfranco17/algorithm-api/service/pkg/router/headers"
 	system "github.com/jgfranco17/algorithm-api/service/pkg/router/system"
 	v0 "github.com/jgfranco17/algorithm-api/service/pkg/router/v0"
@@ -17,22 +16,15 @@ import (
 // Add the fields we want to expose in the logger to the request context
 func addLoggerFields() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if !env.IsLocalEnvironment() {
-			requestID := uuid.NewString()
-			environment := os.Getenv(env.ENV_KEY_ENVIRONMENT)
-			version := os.Getenv(env.ENV_KEY_VERSION)
+		requestID := uuid.NewString()
+		c.Set(string(context_settings.RequestId), requestID)
+		c.Set(string(context_settings.Environment), data.About.Environment)
+		c.Set(string(context_settings.Version), data.About.Version)
 
-			// Golang recommends contexts to use custom types instead
-			// of strings, but gin defines key as a string.
-			c.Set(string(context_settings.RequestId), requestID)
-			c.Set(string(context_settings.Environment), environment)
-			c.Set(string(context_settings.Version), version)
+		originInfo, err := headers.CreateOriginInfoHeader(c)
 
-			originInfo, err := headers.CreateOriginInfoHeader(c)
-
-			if err == nil && originInfo.Origin != "" {
-				c.Set(string(context_settings.Origin), fmt.Sprintf("%s@%s", originInfo.Origin, originInfo.Version))
-			}
+		if err == nil && originInfo.Origin != "" {
+			c.Set(string(context_settings.Origin), fmt.Sprintf("%s@%s", originInfo.Origin, originInfo.Version))
 		}
 		c.Next()
 	}

@@ -7,7 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jgfranco17/algorithm-api/core/pkg/logger"
 	"github.com/jgfranco17/algorithm-api/service/pkg/data"
-	"github.com/jgfranco17/algorithm-api/service/pkg/env"
 )
 
 func HomeHandler(c *gin.Context) {
@@ -18,28 +17,7 @@ func HomeHandler(c *gin.Context) {
 
 func AboutHandler(c *gin.Context) {
 	// Send the parsed JSON data as a response
-	c.JSON(http.StatusOK, data.AboutInfo{
-		Name:        "Algorithm API",
-		Author:      "Joaquin Franco",
-		Repository:  "https://github.com/jgfranco17/algorithm-api",
-		Version:     "0.0.1",
-		Environment: env.GetApplicationEnv(),
-		License:     "MIT",
-		Languages:   []string{"Go"},
-		Algorithms: map[string][]string{
-			"array": {
-				"MaxSubArray",
-				"TwoSum",
-			},
-			"sequence": {
-				"LongestCommonSubsequence",
-				"Fibonacci",
-			},
-			"palindrome": {
-				"palindrome",
-			},
-		},
-	})
+	c.JSON(http.StatusOK, data.About)
 }
 
 func HealthCheckHandler(c *gin.Context) {
