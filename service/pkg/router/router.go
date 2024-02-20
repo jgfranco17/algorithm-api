@@ -8,6 +8,7 @@ import (
 	"github.com/jgfranco17/algorithm-api/core/pkg/context_settings"
 	"github.com/jgfranco17/algorithm-api/core/pkg/logger"
 	"github.com/jgfranco17/algorithm-api/service/pkg/data"
+	"github.com/jgfranco17/algorithm-api/service/pkg/env"
 	"github.com/jgfranco17/algorithm-api/service/pkg/router/headers"
 	system "github.com/jgfranco17/algorithm-api/service/pkg/router/system"
 	v0 "github.com/jgfranco17/algorithm-api/service/pkg/router/v0"
@@ -18,11 +19,14 @@ func addLoggerFields() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		requestID := uuid.NewString()
 		c.Set(string(context_settings.RequestId), requestID)
-		c.Set(string(context_settings.Environment), data.About.Environment)
+		if env.IsLocalEnvironment() {
+			c.Set(string(context_settings.Environment), data.About.Environment)
+		} else {
+			c.Set(string(context_settings.Environment), c.Request.RemoteAddr)
+		}
 		c.Set(string(context_settings.Version), data.About.Version)
 
 		originInfo, err := headers.CreateOriginInfoHeader(c)
-
 		if err == nil && originInfo.Origin != "" {
 			c.Set(string(context_settings.Origin), fmt.Sprintf("%s@%s", originInfo.Origin, originInfo.Version))
 		}
